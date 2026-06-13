@@ -4,10 +4,10 @@ export const FilterBar = () => {
   const { filters, setYear, setType, clearFilters } = useFilters();
 
   const types = [
-    { label: 'All Types', value: '' },
-    { label: 'Movies', value: 'movie' },
-    { label: 'Series', value: 'series' },
-    { label: 'Episodes', value: 'episode' },
+    { label: 'All Genres', value: '' }, // Reusing type as genre mock
+    { label: 'Action', value: 'action' },
+    { label: 'Comedy', value: 'comedy' },
+    { label: 'Drama', value: 'drama' },
   ];
 
   // Generate years from current year down to 1900
@@ -15,13 +15,13 @@ export const FilterBar = () => {
   const years = Array.from({ length: 50 }, (_, i) => (currentYear - i).toString());
 
   return (
-    <div className="flex flex-wrap items-center gap-4 py-4 border-y border-white/5 bg-surface/30 px-4 rounded-xl mt-6">
-      <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-gray-400">Type:</label>
+    <div className="flex flex-wrap items-end gap-6 py-2 w-full">
+      <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
+        <label className="text-xs font-semibold text-grayDark">Genre</label>
         <select
           value={filters.type}
           onChange={(e) => setType(e.target.value)}
-          className="bg-background border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+          className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-black focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full"
         >
           {types.map((type) => (
             <option key={type.value} value={type.value}>
@@ -31,14 +31,14 @@ export const FilterBar = () => {
         </select>
       </div>
 
-      <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-gray-400">Year:</label>
+      <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
+        <label className="text-xs font-semibold text-grayDark">Year</label>
         <select
           value={filters.year}
           onChange={(e) => setYear(e.target.value)}
-          className="bg-background border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+          className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-black focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full"
         >
-          <option value="">Any Year</option>
+          <option value="">All Years</option>
           {years.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -47,14 +47,33 @@ export const FilterBar = () => {
         </select>
       </div>
 
-      <div className="flex-1" />
+      <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
+        <label className="text-xs font-semibold text-grayDark">Rating</label>
+        <select className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-black focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full">
+          <option value="">All Ratings</option>
+          <option value="9">9+ Stars</option>
+          <option value="8">8+ Stars</option>
+          <option value="7">7+ Stars</option>
+        </select>
+      </div>
 
-      <button
-        onClick={clearFilters}
-        className="text-sm text-gray-400 hover:text-white transition-colors"
-      >
-        Clear Filters
-      </button>
+      <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
+        <label className="text-xs font-semibold text-grayDark">Sort By</label>
+        <select className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-black focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full">
+          <option value="popularity">Popularity</option>
+          <option value="rating">Rating</option>
+          <option value="year">Year</option>
+        </select>
+      </div>
+
+      <div className="flex items-center h-10 ml-2">
+        <button
+          onClick={clearFilters}
+          className="text-sm text-primary font-semibold hover:text-blue-700 transition-colors"
+        >
+          Clear Filters
+        </button>
+      </div>
     </div>
   );
 };

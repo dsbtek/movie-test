@@ -10,10 +10,12 @@ export default {
         sans: ['Inter', 'sans-serif'],
       },
       colors: {
-        background: '#0a0a0a',
-        surface: '#171717',
-        primary: '#3b82f6', // vibrant blue
-        secondary: '#a855f7', // vibrant purple
+        background: '#ffffff',
+        surface: '#ffffff',
+        primary: '#0055FF', // Blue from mockup
+        secondary: '#f8f9fa',
+        grayLight: '#f3f4f6',
+        grayDark: '#4b5563',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

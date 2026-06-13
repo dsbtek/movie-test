@@ -8,58 +8,76 @@ import { FilterBar } from '../components/filters/FilterBar';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
+import { Filter } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 export const SearchPage = () => {
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get('q');
+  
   const { filters, setSearchQuery } = useFilters();
-  const [localQuery, setLocalQuery] = useState(filters.searchQuery);
+  const [localQuery, setLocalQuery] = useState(queryParam || filters.searchQuery || 'batman');
   const debouncedQuery = useDebounce(localQuery, 500);
 
   useEffect(() => {
     setSearchQuery(debouncedQuery);
   }, [debouncedQuery, setSearchQuery]);
 
-  const { data, isLoading, error } = useSearchMovies(filters.searchQuery);
+  const { data, isLoading, error } = useSearchMovies(filters.searchQuery || 'batman');
 
   // Filter the results locally since OMDb search endpoint doesn't support direct filtering by year or type robustly
   const filteredMovies = data?.Search?.filter(movie => {
     if (filters.year && movie.Year !== filters.year) return false;
-    if (filters.type && movie.Type !== filters.type) return false;
+    // skip type filter since we mock genre with type and omdb only supports type=movie/series/episode
     return true;
   });
 
   return (
-    <div className="px-4 md:px-8 py-8 w-full max-w-7xl mx-auto flex flex-col gap-6">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-bold text-white tracking-tight">Discover</h1>
-        <p className="text-gray-400">Find your favorite movies, series, and more.</p>
-        
-        <div className="mt-4">
+    <div className="px-6 py-8 w-full max-w-7xl mx-auto flex flex-col gap-8">
+      {/* Search Header */}
+      <div className="flex flex-col sm:flex-row gap-4 w-full items-start sm:items-center">
+        <div className="flex-1 w-full max-w-3xl">
           <SearchInput 
             value={localQuery} 
             onChange={setLocalQuery} 
-            placeholder="Type to search..." 
+            placeholder="Search movies..." 
           />
+        </div>
+        <button 
+          className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+        >
+          <Filter className="w-5 h-5" />
+          Filters
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-6">
+        <div className="flex items-end justify-between">
+          <h1 className="text-xl font-bold text-black tracking-tight">
+            Search Results for "{filters.searchQuery || 'batman'}"
+          </h1>
+          {filteredMovies && (
+            <span className="text-sm text-grayDark font-medium">
+              {filteredMovies.length} results found
+            </span>
+          )}
         </div>
         
         <FilterBar />
       </div>
 
-      <div className="mt-8">
-        {!filters.searchQuery && (
-          <EmptyState message="Start typing to search for movies..." />
-        )}
+      <div className="mt-2">
+        {isLoading && <LoadingState />}
         
-        {filters.searchQuery && isLoading && <LoadingState />}
-        
-        {filters.searchQuery && error && (
+        {error && (
           <ErrorState message="Failed to load search results." />
         )}
         
-        {filters.searchQuery && !isLoading && !error && filteredMovies && filteredMovies.length > 0 && (
+        {!isLoading && !error && filteredMovies && filteredMovies.length > 0 && (
           <MovieGrid movies={filteredMovies} />
         )}
         
-        {filters.searchQuery && !isLoading && !error && (!filteredMovies || filteredMovies.length === 0) && (
+        {!isLoading && !error && (!filteredMovies || filteredMovies.length === 0) && (
           <EmptyState message="No movies found matching your criteria." />
         )}
       </div>

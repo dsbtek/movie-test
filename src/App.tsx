@@ -6,7 +6,7 @@ function App() {
   return (
     <Router>
       <FilterProvider>
-        <div className="min-h-screen flex bg-background">
+        <div className="min-h-screen flex bg-background text-black">
           <AppRoutes />
         </div>
       </FilterProvider>
