@@ -94,31 +94,24 @@ src/
 
 ## 🔧 API Integration
 
-This project uses **TMDB API** (The Movie Database API).
+This project uses **OMDb API** (The Open Movie Database API).
 
 ### Setup
 
-1. Sign up at [TMDB](https://www.themoviedb.org/signup)
-2. Get your API key from [Settings > API](https://www.themoviedb.org/settings/api)
-3. Create a `.env` file:
+1. Request an API key at [OMDb API](http://www.omdbapi.com/apikey.aspx)
+2. Create a `.env.local` file in the root directory:
 
 ```env
-VITE_TMDB_API_KEY=your_api_key_here
-VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
-VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+VITE_OMDB_API_KEY=your_api_key_here
+VITE_OMDB_BASE_URL=http://www.omdbapi.com/
 ```
 
 ### API Endpoints Used
 
 | Endpoint | Purpose |
 |----------|---------|
-| `/movie/popular` | Popular movies for homepage |
-| `/movie/top_rated` | Top rated movies |
-| `/movie/{id}` | Movie details |
-| `/movie/{id}/similar` | Similar movies |
-| `/search/movie` | Search movies with filters |
-| `/genre/movie/list` | Available genres |
-| `/discover/movie` | Filtered movie discovery |
+| `/?s={query}` | Search movies |
+| `/?i={id}` | Get movie details by ID |
 
 ## 🚦 Getting Started
 
@@ -127,29 +120,34 @@ VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
 - Node.js (v18 or higher)
 - npm or yarn
 
-### Installation
+### Set up and Run
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd movie-discovery-dashboard
+# 1. Clone the repository
+git clone git@github.com:dsbtek/movie-test.git
+cd movie-test
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Start development server
-npm run dev
+# 3. Configure environment variables
+# Create a .env.local file and add your OMDb API key
+cp .env.example .env.local # if an example exists, otherwise create it manually
+# Update .env.local with VITE_OMDB_API_KEY
+
+# 4. Start the development server
+pnpm dev
 ```
 
 ### Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
-| `npm run type-check` | Run TypeScript type checking |
+| `pnpm run dev` | Start development server |
+| `pnpm run build` | Build for production |
+| `pnpm run preview` | Preview production build |
+| `pnpm run lint` | Run ESLint |
+| `pnpm run type-check` | Run TypeScript type checking |
 
 ## 🎨 Design Reference
 
@@ -226,15 +224,3 @@ Full TypeScript coverage with:
 - [ ] Add favorite movies with local persistence
 - [ ] Implement skeleton loaders
 - [ ] Add movie cast and crew section
-
----
-
-## 📝 Developer Notes
-
-This assessment demonstrates:
-- Clean component architecture with separation of concerns
-- Reusable UI components
-- Centralized API abstraction layer
-- Proper async state management with TanStack Query
-- Type-safe codebase with comprehensive TypeScript usage
-- Maintainable folder structure following feature-based organization
