@@ -15,6 +15,13 @@ export const useTopRatedMovies = () => {
   });
 };
 
+export const useUpcomingMovies = () => {
+  return useQuery({
+    queryKey: ['movies', 'upcoming'],
+    queryFn: movieApi.getUpcomingMovies,
+  });
+};
+
 export const useSearchMovies = (query: string, page: number = 1) => {
   return useQuery({
     queryKey: ['movies', 'search', query, page],

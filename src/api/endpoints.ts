@@ -31,4 +31,9 @@ export const movieApi = {
   getTopRatedMovies: async (): Promise<OMDbSearchResult> => {
     return movieApi.searchMovies('lord of the rings');
   },
+
+  // Mocking "Upcoming" by searching a different term
+  getUpcomingMovies: async (): Promise<OMDbSearchResult> => {
+    return movieApi.searchMovies('avatar');
+  },
 };
